@@ -107,7 +107,7 @@ def lire_csv(fichier_csv: str) -> pd.DataFrame:
     
     return df
 
-def nettoyer_donnees_ligne(row: pd.Series) -> tuple[str, str, str]:
+def nettoyer_donnees_ligne(row: pd.Series) -> Tuple[str, str, str]:
     """
     Nettoie les données d'une ligne (nom, code postal, siren)
     """

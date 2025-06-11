@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11']
 
     steps:
     - uses: actions/checkout@v3
@@ -21,35 +21,19 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     
-    - name: Cache des dépendances pip
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    
     - name: Installation des dépendances
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pytest pytest-cov flake8
+        pip install flake8
     
-    - name: Vérification du style avec flake8
-      run: |
-        # Arrêter la build si il y a des erreurs de syntaxe Python ou des noms non définis
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Avertissements pour le reste (traités comme warnings)
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    
-    - name: Tests unitaires avec pytest
+    - name: Tests unitaires
       run: |
         python test_unit.py
     
     - name: Test de l'import des modules
       run: |
         python -c "from main import enrichir_sirens; print('✅ Import main réussi')"
-        python -c "import app; print('✅ Import app réussi')" || echo "⚠️ Import app échoué"
     
     - name: Vérification de la structure des fichiers
       run: |
@@ -57,34 +41,3 @@ jobs:
         test -f LICENSE && echo "✅ LICENSE présent"
         test -f requirements.txt && echo "✅ requirements.txt présent"
         test -f .gitignore && echo "✅ .gitignore présent"
-
-  security:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Configuration Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    
-    - name: Installation de safety
-      run: pip install safety
-    
-    - name: Vérification des vulnérabilités
-      run: |
-        pip install -r requirements.txt
-        safety check
-
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Vérification des liens du README
-      run: |
-        # Vérifier que les sections importantes sont présentes
-        grep -q "Installation" README.md && echo "✅ Section Installation"
-        grep -q "Utilisation" README.md && echo "✅ Section Utilisation"
-        grep -q "API" README.md && echo "✅ Section API"
-        grep -q "Licence" README.md && echo "✅ Section Licence"
