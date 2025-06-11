@@ -1,19 +1,43 @@
+#!/usr/bin/env python3
+"""
+Enrichissement automatique de données d'entreprises avec les numéros SIREN.
+
+Ce module utilise l'API gouvernementale française de recherche d'entreprises
+pour enrichir automatiquement des fichiers CSV avec les numéros SIREN manquants.
+
+Auteur: Votre nom
+Licence: MIT
+Version: 2.0.0
+"""
+
 import requests
 import urllib.parse
 import pandas as pd
 import os
 from time import sleep
 import warnings
-from typing import Tuple
+from typing import Tuple, Union
 
 # Supprimer les avertissements pandas
 warnings.filterwarnings('ignore', category=FutureWarning)
 
 BASE_URL = "https://recherche-entreprises.api.gouv.fr"
 
-def recherche_entreprise(api_base, terme, code_postal, per_page=5):
+def recherche_entreprise(api_base: str, terme: str, code_postal: str, per_page: int = 5) -> str:
     """
-    Recherche une entreprise via l'API et retourne le SIREN du premier résultat
+    Recherche une entreprise via l'API gouvernementale et retourne le SIREN du premier résultat.
+    
+    Args:
+        api_base (str): URL de base de l'API
+        terme (str): Nom de l'entreprise à rechercher
+        code_postal (str): Code postal de l'entreprise
+        per_page (int): Nombre de résultats par page (défaut: 5)
+    
+    Returns:
+        str: Numéro SIREN trouvé ou None si aucun résultat
+    
+    Raises:
+        requests.exceptions.RequestException: En cas d'erreur de requête HTTP
     """
     if not terme or not terme.strip():
         print(f"  > Terme de recherche vide, passage...")
@@ -103,25 +127,51 @@ def nettoyer_donnees_ligne(row: pd.Series) -> tuple[str, str, str]:
     
     return nom_usage, code_postal, siren_actuel
 
-def enrichir_sirens(input_path: str, verbose: bool = True) -> pd.DataFrame:
+def valider_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Valide et nettoie un DataFrame pour l'enrichissement SIREN
+    """
+    if df.empty:
+        raise ValueError("Le DataFrame est vide")
+    
+    # Nettoyer les noms de colonnes (supprimer espaces en trou)
+    df.columns = df.columns.str.strip()
+    
+    # Vérifier que les colonnes nécessaires existent
+    colonnes_requises = ['Nom d\'usage', 'Code Postal', 'Num Siren']
+    for col in colonnes_requises:
+        if col not in df.columns:
+            raise ValueError(f"Colonne '{col}' manquante dans le DataFrame")
+    
+    return df
+
+def enrichir_sirens(input_data: Union[str, pd.DataFrame], verbose: bool = True) -> pd.DataFrame:
     """
     Enrichit un DataFrame avec les SIRENs manquants via l'API gouvernementale
     
     Args:
-        input_path: Chemin vers le fichier CSV d'entrée
+        input_data: Chemin vers le fichier CSV d'entrée OU DataFrame pandas
         verbose: Afficher les logs détaillés
     
     Returns:
         DataFrame pandas enrichi avec les SIRENs
     """
-    # Étape 1: Lecture du CSV
-    if verbose:
-        print(f"Lecture du fichier CSV : {input_path}")
+    # Étape 1: Obtenir le DataFrame
+    if isinstance(input_data, str):
+        # C'est un chemin de fichier
+        if verbose:
+            print(f"Lecture du fichier CSV : {input_data}")
+        df = lire_csv(input_data)
+    elif isinstance(input_data, pd.DataFrame):
+        # C'est déjà un DataFrame
+        if verbose:
+            print("Traitement du DataFrame fourni")
+        df = valider_dataframe(input_data.copy())
+    else:
+        raise TypeError("input_data doit être un chemin de fichier (str) ou un DataFrame pandas")
     
-    df = lire_csv(input_path)
-    
     if verbose:
-        print(f"Fichier CSV chargé : {len(df)} lignes")
+        print(f"DataFrame chargé : {len(df)} lignes")
         print(f"Colonnes disponibles : {list(df.columns)}")
         print(f"Premières lignes du DataFrame :")
         print(df.head(3))
@@ -215,5 +265,11 @@ def traiter_fichier_csv(fichier_csv: str):
         print(f"Erreur : {e}")
 
 if __name__ == "__main__":
-    fichier_csv = "data/TEST LOTFI .csv"
-    traiter_fichier_csv(fichier_csv)
+    # Exemple d'utilisation avec le fichier d'exemple
+    fichier_csv = "data/exemple.csv"
+    if os.path.exists(fichier_csv):
+        traiter_fichier_csv(fichier_csv)
+    else:
+        print(f"❌ Fichier d'exemple non trouvé : {fichier_csv}")
+        print("💡 Créez un fichier CSV avec les colonnes : 'Nom d'usage', 'Code Postal', 'Num Siren'")
+        print("📖 Consultez data/exemple.csv pour voir le format attendu")
