@@ -5,7 +5,7 @@ Enrichissement automatique de données d'entreprises avec les numéros SIREN.
 Ce module utilise l'API gouvernementale française de recherche d'entreprises
 pour enrichir automatiquement des fichiers CSV avec les numéros SIREN manquants.
 
-Auteur: Votre nom
+Auteur: DJEDDOU Abdelatif
 Licence: MIT
 Version: 2.0.0
 """

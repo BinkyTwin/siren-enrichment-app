@@ -1,5 +1,9 @@
 # 🏢 Enrichissement SIREN
 
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-brightgreen.svg)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.40+-red.svg)](https://streamlit.io)
+
 Une application Python avec interface Streamlit pour enrichir automatiquement vos données d'entreprises avec leurs numéros SIREN via l'API gouvernementale française.
 
 ## ✨ Fonctionnalités
@@ -21,8 +25,8 @@ Une application Python avec interface Streamlit pour enrichir automatiquement vo
 ### Installation des dépendances
 
 ```bash
-git clone https://github.com/BinkyTwin/enrichissement-siren.git
-cd enrichissement-siren
+git clone https://github.com/BinkyTwin/siren-enrichment-app.git
+cd siren-enrichment-app
 pip install -r requirements.txt
 ```
 
@@ -87,7 +91,7 @@ DEMO COMPANY SA;13000;
 ## 🏗️ Architecture
 
 ```
-📁 enrichissement-siren/
+📁 siren-enrichment-app/
 ├── 📄 main.py              # Logique métier principale
 ├── 📱 app.py               # Interface Streamlit simple
 ├── 🚀 app_advanced.py      # Interface Streamlit avancée
@@ -193,12 +197,12 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ## 🆘 Support
 
-- 🐛 **Issues** : [GitHub Issues](https://github.com/BinkyTwin/enrichissement-siren/issues)
-- 📧 **Contact** : votre-email@example.com
+- 🐛 **Issues** : [GitHub Issues](https://github.com/BinkyTwin/siren-enrichment-app/issues)
+- 📧 **Contact** : abdelatifdjeddou@gmail.com
 
 ---
 
 <div align="center">
-  <strong>Fait avec ❤️ en France</strong><br>
+  <strong>Fait avec ❤️ par DJEDDOU Abdelatif</strong><br>
   Utilise l'API officielle gouvernementale française
 </div>

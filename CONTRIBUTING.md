@@ -6,9 +6,9 @@ Merci de votre intérêt pour contribuer à ce projet ! 🎉
 
 ### 1. Fork et Clone
 ```bash
-git fork https://github.com/BinkyTwin/enrichissement-siren
-git clone https://github.com/votre-fork/enrichissement-siren.git
-cd enrichissement-siren
+git fork https://github.com/BinkyTwin/siren-enrichment-app
+git clone https://github.com/votre-fork/siren-enrichment-app.git
+cd siren-enrichment-app
 ```
 
 ### 2. Configuration de l'environnement
@@ -26,7 +26,7 @@ git checkout -b feature/ma-nouvelle-fonctionnalite
 ## 📋 Types de contributions
 
 ### 🐛 Signaler un bug
-- Utilisez les [GitHub Issues](https://github.com/BinkyTwin/enrichissement-siren/issues)
+- Utilisez les [GitHub Issues](https://github.com/BinkyTwin/siren-enrichment-app/issues)
 - Décrivez le problème en détail
 - Incluez les étapes de reproduction
 - Mentionnez votre environnement (OS, Python version)
@@ -101,8 +101,8 @@ Fixes #45
 
 ## 🆘 Besoin d'aide ?
 
-- 💬 Ouvrez une [Discussion](https://github.com/BinkyTwin/enrichissement-siren/discussions)
-- 📧 Contactez les mainteneurs
+- 💬 Ouvrez une [Discussion](https://github.com/BinkyTwin/siren-enrichment-app/discussions)
+- 📧 Contactez le mainteneur : abdelatifdjeddou@gmail.com
 - 📖 Consultez la documentation
 
 ## 📄 Licence
