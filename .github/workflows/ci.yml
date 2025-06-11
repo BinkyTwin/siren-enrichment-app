@@ -1,0 +1,43 @@
+name: Tests et Qualité du Code
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11']
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Configuration Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Installation des dépendances
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install flake8
+    
+    - name: Tests unitaires
+      run: |
+        python test_unit.py
+    
+    - name: Test de l'import des modules
+      run: |
+        python -c "from main import enrichir_sirens; print('✅ Import main réussi')"
+    
+    - name: Vérification de la structure des fichiers
+      run: |
+        test -f README.md && echo "✅ README.md présent"
+        test -f LICENSE && echo "✅ LICENSE présent"
+        test -f requirements.txt && echo "✅ requirements.txt présent"
+        test -f .gitignore && echo "✅ .gitignore présent"
