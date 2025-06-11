@@ -193,7 +193,7 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ## 🆘 Support
 
-- 🐛 **Issues** : [GitHub Issues](https://github.com/votre-username/enrichissement-siren/issues)
+- 🐛 **Issues** : [GitHub Issues](https://github.com/BinkyTwin/enrichissement-siren/issues)
 - 📧 **Contact** : votre-email@example.com
 
 ---
